@@ -14,30 +14,13 @@
     </label>
     <div class="control">
         <div class="nested options-list">
-            <?php if ($block->showSingle()) : ?>
-                <?= /* @noEscape */ $block->getSelectionQtyTitlePrice($_selections[0]) ?>
-                <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($_selections[0]) ?>
-                <input type="hidden"
-                       class="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>  product bundle option"
-                       name="bundle_option[<?= $block->escapeHtml($_option->getId()) ?>]"
-                       value="<?= $block->escapeHtmlAttr($_selections[0]->getSelectionId()) ?>"/>
-                <div class="control">
-                    <input <?php if (!$_selections[0]->getSelectionCanChangeQty()) { echo 'disabled="disabled"'; }?>
-                            id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-qty-input"
-                            class="input-text qty<?php if (!$_selections[0]->getSelectionCanChangeQty()) { echo 'qty-disabled'; } ?>"
-                            type="number"
-                            name="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
-                            data-selector="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
-                            value="<?= $block->escapeHtmlAttr($_selections[0]->getSelectionQty() * 1) ?>"/>
-                </div>
-            <?php else :?>
                 <?php foreach ($_selections as $_selection) : ?>
                     <div class="field choice">
                         <input class="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?> checkbox product bundle option change-container-classname"
                                id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>"
-                               type="checkbox"
-                               name="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>][<?= $block->escapeHtmlAttr($_selection->getId()) ?>]"
-                               data-selector="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>][<?= $block->escapeHtmlAttr($_selection->getId()) ?>]"
+                               type="hidden"
+                               name="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>][<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>]"
+                               data-selector="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>][<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>]"
                                value="<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>"/>
                         <label class="label"
                                for="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>">
@@ -48,7 +31,7 @@
                     </div>
                     <div class="control">
                         <input <?php if (!$_selection->isSaleable() || !$_selection->getSelectionCanChangeQty()) { echo 'disabled = "disabled"'; }?>
-                                id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-qty-input"
+                                id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>-qty-input"
                                 class="input-text qty<?php if (!$_selection->getSelectionCanChangeQty()) { echo ' qty-disabled'; } ?>"
                                 type="number"
                                 name="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
@@ -57,7 +40,6 @@
                     </div>
                 <?php endforeach; ?>
                 <div id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-container"></div>
-            <?php endif; ?>
         </div>
     </div>
 </div>
