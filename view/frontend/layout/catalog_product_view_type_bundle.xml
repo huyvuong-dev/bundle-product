@@ -2,6 +2,6 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="product.info.bundle.options.checkbox"
-                        template="Magenest_BundleProduct::catalog/product/view/type/bundle/option/override-checkbox.phtml"/>
+                        template="Magenest_BundleProduct::catalog/product/view/type/bundle/option/checkbox.phtml"/>
     </body>
 </page>
