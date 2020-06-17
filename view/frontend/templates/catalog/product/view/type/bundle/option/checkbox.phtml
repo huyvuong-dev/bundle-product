@@ -16,7 +16,7 @@
         <div class="nested options-list">
                 <?php foreach ($_selections as $_selection) : ?>
                     <div class="field choice">
-                        <input class="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?> checkbox product bundle option change-container-classname"
+                        <input class="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?> product bundle option"
                                id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>"
                                type="hidden"
                                name="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>][<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>]"
@@ -34,8 +34,8 @@
                                 id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>-qty-input"
                                 class="input-text qty<?php if (!$_selection->getSelectionCanChangeQty()) { echo ' qty-disabled'; } ?>"
                                 type="number"
-                                name="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
-                                data-selector="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                                name="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>][<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>]"
+                                data-selector="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>][<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>]"
                                 value="<?= $block->escapeHtmlAttr($_selection->getSelectionQty() * 1) ?>"/>
                     </div>
                 <?php endforeach; ?>
