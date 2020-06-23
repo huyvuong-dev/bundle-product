@@ -18,6 +18,8 @@ define([
     var globalOptions = {
         optionConfig: null,
         productBundleSelector: 'input.bundle.option, select.bundle.option, textarea.bundle.option',
+        increaseButtonSelector: 'button[id^=increase-qty-]',
+        decreaseButtonSelector: 'button[id^=decrease-qty-]',
         qtyFieldSelector: 'input.qty',
         priceBoxSelector: '.price-box',
         optionHandlers: {},
@@ -51,7 +53,9 @@ define([
             var form = this.element,
                 options = $(this.options.productBundleSelector, form),
                 priceBox = $(this.options.priceBoxSelector, form),
-                qty = $(this.options.qtyFieldSelector, form);
+                qty = $(this.options.qtyFieldSelector, form),
+                increaseButton = $(this.options.increaseButtonSelector,form),
+                decreaseButton = $(this.options.decreaseButtonSelector,form);
 
             if (priceBox.data('magePriceBox') &&
                 priceBox.priceBox('option') &&
@@ -67,6 +71,8 @@ define([
 
             options.on('change', this._onBundleOptionChanged.bind(this));
             qty.on('change', this._onQtyFieldChanged.bind(this));
+            increaseButton.on('click', this._onBundleOptionChanged(this));
+            decreaseButton.on('click', this._onBundleOptionChanged(this));
         },
 
         /**
@@ -347,16 +353,24 @@ define([
                     qtyField = element.data('qtyField');
                 }
                 qtyField.data('option', element);
-                toggleQtyField(qtyField, optionQty, optionId, optionValue, canQtyCustomize);//eslint-disable-line
-                tempChanges = utils.deepClone(optionConfig[optionValue].prices);
-                tempChanges = applyTierPrice(tempChanges, optionQty, optionConfig);//eslint-disable-line
-                tempChanges = applyQty(tempChanges, optionQty);//eslint-disable-line
+                if (optionQty > 0){
+                    toggleQtyField(qtyField, optionQty, optionId, optionValue, canQtyCustomize);//eslint-disable-line
+                    tempChanges = utils.deepClone(optionConfig[optionValue].prices);
+                    tempChanges = applyTierPrice(tempChanges, optionQty, optionConfig);//eslint-disable-line
+                    tempChanges = applyQty(tempChanges, optionQty);//eslint-disable-line
+                }else{
+                    tempChanges = {};
+                    toggleQtyField(qtyField, '0', optionId, optionValue, canQtyCustomize);//eslint-disable-line
+                }
 
                 selectedIds[optionId] = selectedIds[optionId] || [];
                 optionHash = 'bundle-option-' + optionName;
                 changes[optionHash] = tempChanges;
-                if (selectedIds[optionId].indexOf(optionValue) === -1)
+                if (selectedIds[optionId].indexOf(optionValue) === -1){
                     selectedIds[optionId].push(optionValue);
+                }else if (optionQty < 1){
+                    selectedIds[optionId] = _.without(selectedIds[optionId],optionValue);
+                }
                 break;
         }
 

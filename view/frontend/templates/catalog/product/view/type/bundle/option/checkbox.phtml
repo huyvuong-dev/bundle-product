@@ -30,14 +30,34 @@
                         </label>
                     </div>
                     <div class="control">
+                        <button type="button" id="decrease-qty-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>">-</button>
                         <input <?php if (!$_selection->isSaleable() || !$_selection->getSelectionCanChangeQty()) { echo 'disabled = "disabled"'; }?>
-                                id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>-qty-input"
-                                class="input-text qty<?php if (!$_selection->getSelectionCanChangeQty()) { echo ' qty-disabled'; } ?>"
-                                type="number"
-                                name="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>][<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>]"
-                                data-selector="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>][<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>]"
-                                value="<?= $block->escapeHtmlAttr($_selection->getSelectionQty() * 1) ?>"/>
+                               id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>-qty-input"
+                               class="input-text qty<?php if (!$_selection->getSelectionCanChangeQty()) { echo ' qty-disabled'; } ?>"
+                               type="number"
+                               name="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>][<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>]"
+                               data-selector="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>][<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>]"
+                               value="<?= $block->escapeHtmlAttr($_selection->getSelectionQty() * 1) ?>"/>
+                        <button type="button" id="increase-qty-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>">+</button>
                     </div>
+                    <script type="text/javascript">
+                        require([
+                                'jquery'
+                            ], function($) {
+                                $("#decrease-qty-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>").on('click', function(event){
+                                    var newQty = parseInt($("#bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>-qty-input").val()) - 1;
+                                    if (newQty < 1){
+                                        newQty = 0;
+                                    }
+                                    $("#bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>-qty-input").val(newQty);
+                                });
+                                $("#increase-qty-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>").on('click', function(event){
+                                    var newQty = parseInt($("#bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>-qty-input").val()) + 1;
+                                    $("#bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>-qty-input").val(newQty);
+                                })
+                            }
+                        );
+                    </script>
                 <?php endforeach; ?>
                 <div id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-container"></div>
         </div>
